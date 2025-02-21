@@ -16,7 +16,12 @@ void TestComponentsToSeconds(){
 	assert(t == 11862);
 	
 	// More tests go here!
+	long long unsigned int t2 = TimeCode::ComponentsToSeconds(1, 10, 30); 
+	assert(t2 == 4230);
 	
+	long long unsigned int t3 = TimeCode::ComponentsToSeconds(0, 0, 0);
+	assert(t3 == 0);
+
 	cout << "PASSED!" << endl << endl;
 }
 
@@ -49,6 +54,9 @@ void TestComponentConstructor(){
 	
 	// More tests go here!
 	
+	TimeCode tc4 = TimeCode(3, 60, 0); // This is an invalid time code that should roll over
+	assert(tc4.ToString() == "4:0:0");  // Expecting 4 hours and 0 minutes after rolling over the 60 minutes
+	
 	cout << "PASSED!" << endl << endl;
 }
 
@@ -66,6 +74,9 @@ void TestGetComponents(){
 	assert(h == 5 && m == 2 && s == 18);
 	
 	// More tests go here!
+	TimeCode tc2 = TimeCode(10, 30, 45);
+	tc2.GetComponents(h, m, s);
+	assert(h == 10 && m == 30 && s == 45);
 	
 	cout << "PASSED!" << endl << endl;
 }
@@ -119,6 +130,52 @@ void TestSetMinutes()
 	cout << "PASSED!" << endl << endl;
 }
 
+void TestAddition() {
+    cout << "Testing Addition" << endl;
+
+    TimeCode tc1(2, 30, 45); // 2 hours, 30 minutes, 45 seconds
+    TimeCode tc2(1, 44, 20); // 1 hour, 44 minutes, 20 seconds
+    TimeCode result = tc1 + tc2; // Expected result: 4 hours, 15 minutes, 5 seconds
+
+    assert(result.ToString() == "4:15:5");
+
+    cout << "PASSED!" << endl << endl;
+}
+
+void TestComparison(){
+    cout << "Testing Comparison Operators" << endl;
+
+    TimeCode tc1 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds
+    TimeCode tc2 = TimeCode(2, 0, 0);    // 2 hours, 0 minutes, 0 seconds
+    TimeCode tc3 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds (same as tc1)
+
+    // Test equality (==) operator
+    assert(tc1 == tc3); // Should be equal
+    assert(!(tc1 == tc2)); // Should not be equal
+
+    // Test inequality (!=) operator
+    assert(tc1 != tc2); // Should be unequal
+    assert(!(tc1 != tc3)); // Should not be unequal
+
+    // Test less than (<) operator
+    assert(tc1 < tc2); // tc1 is less than tc2
+    assert(!(tc2 < tc1)); // tc2 is not less than tc1
+
+    // Test greater than (>) operator
+    assert(!(tc1 > tc2)); // tc1 is not greater than tc2
+    assert(tc2 > tc1); // tc2 is greater than tc1
+
+    // Test less than or equal to (<=) operator
+    assert(tc1 <= tc3); // tc1 is equal to tc3
+    assert(tc1 <= tc2); // tc1 is less than tc2
+
+    // Test greater than or equal to (>=) operator
+    assert(tc2 >= tc1); // tc2 is greater than or equal to tc1
+    assert(tc3 >= tc1); // tc3 is equal to tc1
+
+    cout << "PASSED!" << endl << endl;
+}
+
 
 // Many More Tests...
 
@@ -129,8 +186,12 @@ int main(){
 	TestDefaultConstructor();
 	TestComponentConstructor();
 	TestGetComponents();
+	TestSubtract();
+	TestSetMinutes();
+	TestAddition();  
+	TestComparison(); 
 	
-	// Many othere test functions...
+	// Many other test functions...
 	
 	cout << "PASSED ALL TESTS!!!" << endl;
 	return 0;
