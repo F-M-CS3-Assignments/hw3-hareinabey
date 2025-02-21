@@ -1,3 +1,6 @@
+//Author: Harein Abeysekera
+//Date: February 17th, 2025
+
 #ifndef TIMECODE_H
 #define TIMECODE_H
 
