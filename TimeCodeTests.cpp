@@ -360,33 +360,48 @@ void TestLessThan(){
 	cout << "PASSED!" << endl << endl;
 }
 
-void TestComparison(){
-    cout << "Testing Comparison Operators" << endl;
+// void TestComparison(){
+//     cout << "Testing Comparison Operators" << endl;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    // Creating test cases
->>>>>>> 4741e2d (Forgot to add tests)
-=======
->>>>>>> c88ae26 (Save local changes before pulling)
-    TimeCode tc1 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds
-    TimeCode tc2 = TimeCode(2, 0, 0);    // 2 hours, 0 minutes, 0 seconds
-    TimeCode tc3 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds (same as tc1)
 
-    // Test equality (==) operator
-    assert(tc1 == tc3); // Should be equal
-    assert(!(tc1 == tc2)); // Should not be equal
+//     TimeCode tc1 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds
+//     TimeCode tc2 = TimeCode(2, 0, 0);    // 2 hours, 0 minutes, 0 seconds
+//     TimeCode tc3 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds (same as tc1)
 
-    // Test inequality (!=) operator
-    assert(tc1 != tc2); // Should be unequal
-    assert(!(tc1 != tc3)); // Should not be unequal
+//     // Test equality (==) operator
+//     assert(tc1 == tc3); // Should be equal
+//     assert(!(tc1 == tc2)); // Should not be equal
 
-    // Test less than (<) operator
-    assert(tc1 < tc2); // tc1 is less than tc2
-    assert(!(tc2 < tc1)); // tc2 is not less than tc1
+//     // Test inequality (!=) operator
+//     assert(tc1 != tc2); // Should be unequal
+//     assert(!(tc1 != tc3)); // Should not be unequal
 
-    // Test greater than (>) operator
+//     // Test less than (<) operator
+//     assert(tc1 < tc2); // tc1 is less than tc2
+//     assert(!(tc2 < tc1)); // tc2 is not less than tc1
+
+//     // Test greater than (>) operator
+//     assert(!(tc1 > tc2)); // tc1 is not greater than tc2
+//     assert(tc2 > tc1); // tc2 is greater than tc1
+
+//     // Test less than or equal to (<=) operator
+//     assert(tc1 <= tc3); // tc1 is equal to tc3
+//     assert(tc1 <= tc2); // tc1 is less than tc2
+
+//     // Test greater than or equal to (>=) operator
+//     assert(tc2 >= tc1); // tc2 is greater than or equal to tc1
+//     assert(tc3 >= tc1); // tc3 is equal to tc1
+
+//     cout << "PASSED!" << endl << endl;
+// }
+
+void TestGreaterThan(){
+	cout << "Testing GreaterThan" << endl;
+	TimeCode tc1 = TimeCode(3, 0, 0);
+	TimeCode tc2 = TimeCode(0, 40, 0);
+	TimeCode tc3 = TimeCode(3, 0, 0);
+	
+	 // Test greater than (>) operator
     assert(!(tc1 > tc2)); // tc1 is not greater than tc2
     assert(tc2 > tc1); // tc2 is greater than tc1
 
@@ -394,11 +409,27 @@ void TestComparison(){
     assert(tc1 <= tc3); // tc1 is equal to tc3
     assert(tc1 <= tc2); // tc1 is less than tc2
 
-    // Test greater than or equal to (>=) operator
-    assert(tc2 >= tc1); // tc2 is greater than or equal to tc1
-    assert(tc3 >= tc1); // tc3 is equal to tc1
+	cout << "PASSED!" << endl << endl;
+}
 
-    cout << "PASSED!" << endl << endl;
+
+void TestAverage(){
+	cout << "Testing Average" << endl;
+	
+	TimeCode tc1 = TimeCode(5, 0, 0);
+	TimeCode tc2 = TimeCode(6, 0, 0);
+	TimeCode ans = TimeCode(5, 30, 0);
+	assert( ((tc1 + tc2) / 2.0) == ans); 
+	
+	// test 2
+	TimeCode tc3 = TimeCode(2, 15, 30);
+	TimeCode tc4 = TimeCode(3, 45, 5);
+	TimeCode tc5 = TimeCode(1, 28, 31);
+	ans = TimeCode(2, 29, 42);
+	TimeCode res = (tc3 + tc4 + tc5) / 3.0; 
+	assert(res == ans); 
+	
+	cout << "PASSED!" << endl << endl;
 }
 	
 	

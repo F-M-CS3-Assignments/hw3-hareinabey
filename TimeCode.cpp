@@ -105,6 +105,18 @@ TimeCode TimeCode::operator*(double a) const {
     return TimeCode(0, 0, static_cast<long long unsigned int>(t * a));
 }
 
+// Overload division operator
+TimeCode TimeCode::operator/(double a) const{
+    if (a==0){
+        throw invalid_argument("Cannot divide by 0.");
+    } else if(a < 0){
+        throw invalid_argument("Cannot produce negative time....");
+    }
+    TimeCode divTime = TimeCode();
+    divTime.t = t/a;
+    return divTime;
+}
+
 // Comparison operators
 bool TimeCode::operator==(const TimeCode& other) const {
     return t == other.t;
