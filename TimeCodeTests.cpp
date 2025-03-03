@@ -146,9 +146,12 @@ void TestComparison(){
     cout << "Testing Comparison Operators" << endl;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     // Creating test cases
 >>>>>>> 4741e2d (Forgot to add tests)
+=======
+>>>>>>> c88ae26 (Save local changes before pulling)
     TimeCode tc1 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds
     TimeCode tc2 = TimeCode(2, 0, 0);    // 2 hours, 0 minutes, 0 seconds
     TimeCode tc3 = TimeCode(1, 30, 30);  // 1 hour, 30 minutes, 30 seconds (same as tc1)
