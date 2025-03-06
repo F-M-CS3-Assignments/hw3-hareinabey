@@ -144,23 +144,26 @@ int main(){
 
             // Add the batch to your vector
             batches.push_back(dss);
+            
 		} else if (choice == 'V' || choice == 'v') {
-			for (auto it = batches.begin(); it != batches.end(); ) {
-				cout << "        " << drying_snap_shot_to_string(*it) << endl;
-				if(get_time_remaining(*it) == 0) {
-					delete it->timeToDry;
-					it = batches.erase(it);
-				} else {
-					++it;
-				}
-			}
-			cout << "        " << batches.size() << " batches being tracked." << endl;
-		} else if (choice == 'Q' || choice == 'q') {
-            for (auto it = batches.begin(); it != batches.end(); ) {
-                delete it->timeToDry;
-                it = batches.erase(it);
+            int i = 0;
+            while (i < batches.size()) {
+                cout << "        " << drying_snap_shot_to_string(batches[i]) << endl;
+                if(get_time_remaining(batches[i]) == 0) {
+                    delete batches[i].timeToDry;
+                    batches.erase(batches.begin() + i);
+                } else {
+                    i++;
+                }
             }
 			cout << "        " << batches.size() << " batches being tracked." << endl;
+		} else if (choice == 'Q' || choice == 'q') {
+            int i = 0;
+            while (i < batches.size()) {
+                delete batches[i].timeToDry;
+                i++;
+            }
+            batches.clear();
 			break;
 		}
 	}
