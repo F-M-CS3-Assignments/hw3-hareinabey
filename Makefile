@@ -4,6 +4,6 @@ all:
 	g++ -g -Wall TimeCode.cpp PaintDryTimer.cpp -o pdt
 
 run:
-	./pdt
+	./nasa
 
 try: all run

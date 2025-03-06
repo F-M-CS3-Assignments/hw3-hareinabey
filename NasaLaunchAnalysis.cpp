@@ -25,7 +25,8 @@ vector<string> split(const string &s, char delimiter) {
 // Updated parse_line function using friend's approach:
 // It splits the line by commas, then searches for a token containing a colon.
 // Then it splits that token by spaces and picks the first part that contains a colon.
-// Finally, it splits the extracted time by ':' and converts it to a TimeCode (with seconds set to 0).
+// Finally, it splits the extracted time by ':' and converts it to a TimeCode.
+
 TimeCode parse_line(const string &line) {
     vector<string> tokens = split(line, ',');  // Split the line by commas.
     string time_str = "";
@@ -50,21 +51,25 @@ TimeCode parse_line(const string &line) {
     // Remove any spaces from the extracted time.
     time_str.erase(remove(time_str.begin(), time_str.end(), ' '), time_str.end());
     
-    // Split the time string into hours and minutes.
+    // Split the time string by ':'.
     vector<string> time_parts = split(time_str, ':');
-    if (time_parts.size() != 2) { 
+    if (time_parts.size() == 2) { 
+        int hours = stoi(time_parts[0]);
+        int minutes = stoi(time_parts[1]);
+        int seconds = 0; // Default for seconds is 0.
+        return TimeCode(hours, minutes, seconds);
+    } else if (time_parts.size() == 3) {
+        int hours = stoi(time_parts[0]);
+        int minutes = stoi(time_parts[1]);
+        int seconds = stoi(time_parts[2]);
+        return TimeCode(hours, minutes, seconds);
+    } else {
         return TimeCode(0, 0, 0);
     }
-    
-    int hours = stoi(time_parts[0]);
-    int minutes = stoi(time_parts[1]);
-    int seconds = 0; // Default for seconds is 0.
-    
-    return TimeCode(hours, minutes, seconds);
 }
 
 int main() {
-    // Open the CSV file containing the NASA launch data (hardcoded).
+    // Open the CSV file (hardcoded).
     ifstream infile("Space_Corrected.csv");
     if (!infile) {  // Check if the file opening failed.
          cerr << "Failed to open Space_Corrected.csv" << endl;
@@ -76,7 +81,8 @@ int main() {
     // Skip the header row.
     getline(infile, line);
     
-    vector<TimeCode> times;  // Vector to store valid TimeCode objects.
+    vector<TimeCode> times;     // Vector to store valid TimeCode objects.
+    int valid_data_points = 0;
     
     // Read the file line by line.
     while(getline(infile, line)) {
@@ -84,11 +90,12 @@ int main() {
          try {
               TimeCode tc = parse_line(line);  // Parse the line into a TimeCode.
               // If the parsed time is 0:0:0 and the line doesn't contain "00:00 UTC",
-              // then assume the launch instance is missing exact time data and skip it.
+              // assume the launch instance is missing exact time data and skip it.
               if(tc.GetHours() == 0 && tc.GetMinutes() == 0 && line.find("00:00 UTC") == string::npos) {
                   continue;
               } else {
                   times.push_back(tc);  // Add the valid TimeCode to the vector.
+                  valid_data_points++;
               }
          } catch (const exception &e) {
               // Ignore lines that cannot be parsed.
@@ -101,17 +108,22 @@ int main() {
          return 0;
     }
     
-    // Sum all TimeCode objects.
-    TimeCode sum(0, 0, 0);
+    // Sum all TimeCode objects in seconds.
+    unsigned long long total_seconds = 0;
     for (const auto &tc : times) {
-         sum = sum + tc;
+         total_seconds += tc.GetTimeCodeAsSeconds();
     }
-    // Compute the average time.
-    double count = times.size();
-    TimeCode avg = sum / count;
     
-    // Output the total number of data points and the computed average time.
-    cout << times.size() << " data points." << endl;
+    // Compute the average time in seconds using rounding.
+    unsigned long long n = times.size();
+    unsigned long long avg_seconds = (total_seconds + n / 2) / n;
+    int avg_hours = avg_seconds / 3600;
+    int avg_minutes = (avg_seconds % 3600) / 60;
+    int avg_secs = avg_seconds % 60;
+    TimeCode avg(avg_hours, avg_minutes, avg_secs);
+    
+    // Output the total number of valid data points and the computed average time.
+    cout << valid_data_points << " data points." << endl;
     cout << "AVERAGE: " << avg.ToString() << endl;
     return 0;
 }
