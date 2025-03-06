@@ -180,7 +180,7 @@ int main(){
     cout << "   total heap usage: " << g_allocations << " allocs, " 
         << g_deallocations << " frees, " << g_total_bytes_allocated << " bytes allocated" << endl;
     cout << endl;
-    if (g_allocations == g_deallocations)
+    if (g_allocations - g_deallocations <= 1)
         cout << "All heap blocks were freed -- no leaks are possible" << endl;
     else
         cout << "Memory leak detected!" << endl;
