@@ -7,29 +7,10 @@
 #include <vector>       
 #include <cstdlib>     
 #include <cmath>        
-#include <cassert>     
+#include <cassert>    
+#include <algorithm> 
 #include "TimeCode.h"   
 using namespace std;
-
-// Global counters to track memory allocations and deallocations.
-static size_t g_allocations = 0;
-static size_t g_deallocations = 0;
-static size_t g_total_bytes_allocated = 0;
-
-// Override global new to track allocations.
-void* operator new(size_t size) {
-    g_allocations++;
-    g_total_bytes_allocated += size; // Add allocated size to total
-    void* p = malloc(size);
-    if (!p) throw bad_alloc();
-    return p;
-}
-
-// Override global delete to track deallocations.
-void operator delete(void* p) noexcept {
-    g_deallocations++;
-    free(p);
-}
 
 
 struct DryingSnapShot {
@@ -175,24 +156,14 @@ int main(){
 			}
 			cout << "        " << batches.size() << " batches being tracked." << endl;
 		} else if (choice == 'Q' || choice == 'q') {
+            for (auto it = batches.begin(); it != batches.end(); ) {
+                delete it->timeToDry;
+                it = batches.erase(it);
+            }
+			cout << "        " << batches.size() << " batches being tracked." << endl;
 			break;
 		}
 	}
-    
-	for (auto &batch : batches) {
-		delete batch.timeToDry;
-	}
-    
-    cout << "\nHEAP SUMMARY:" << endl;
-    cout << "     in use at exit: 0 bytes in 0 blocks" << endl;
-    cout << "   total heap usage: " << g_allocations << " allocs, " 
-        << g_deallocations << " frees, " << g_total_bytes_allocated << " bytes allocated" << endl;
-    cout << endl;
-    if (g_allocations - g_deallocations <= 1)
-        cout << "All heap blocks were freed -- no leaks are possible" << endl;
-    else
-        cout << "Memory leak detected!" << endl;
-
 	return 0;
 }
 

@@ -4,6 +4,6 @@ all:
 	g++ -g -Wall TimeCode.cpp PaintDryTimer.cpp -o pdt
 
 run:
-	./nasa
+	valgrind --leak-check=full ./pdt
 
 try: all run
