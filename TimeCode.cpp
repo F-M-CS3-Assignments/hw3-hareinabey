@@ -102,8 +102,12 @@ TimeCode TimeCode::operator-(const TimeCode& other) const {
 
 // Overload multiplication operator
 TimeCode TimeCode::operator*(double a) const {
+    if(a < 0) {
+        throw invalid_argument("Cannot multiply by a negative number");
+    }
     return TimeCode(0, 0, static_cast<long long unsigned int>(t * a));
 }
+
 
 // Overload division operator
 TimeCode TimeCode::operator/(double a) const{
