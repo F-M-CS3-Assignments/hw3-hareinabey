@@ -145,16 +145,24 @@ int main(){
 		cout << "Choose an option: (A)dd, (V)iew Current Items, (Q)uit: ";
 		cin >> choice;
 		if (choice == 'A' || choice == 'a') {
-			double radius;
-			cout << "        radius: ";
-			cin >> radius;
-			double sa = get_sphere_sa(radius);
-			TimeCode* tcPtr = compute_time_code(sa);
-			DryingSnapShot dss;
-			dss.name = "Batch-" + to_string(rand());
-			dss.startTime = time(0);
-			dss.timeToDry = tcPtr;
-			batches.push_back(dss);
+            double radius;
+            cout << "        radius: ";
+            cin >> radius;
+
+            double sa = get_sphere_sa(radius);       // Compute the surface area
+            TimeCode* tcPtr = compute_time_code(sa); // Compute drying time (TimeCode)
+
+            // Create a new DryingSnapShot
+            DryingSnapShot dss;
+            dss.name = "Batch-" + to_string(rand());
+            dss.startTime = time(0);
+            dss.timeToDry = tcPtr;
+
+            //Add this line to print the snapshot info right away:
+            cout << "        " << drying_snap_shot_to_string(dss) << endl;
+
+            // Add the batch to your vector
+            batches.push_back(dss);
 		} else if (choice == 'V' || choice == 'v') {
 			for (auto it = batches.begin(); it != batches.end(); ) {
 				cout << "        " << drying_snap_shot_to_string(*it) << endl;
